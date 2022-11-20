@@ -8,7 +8,7 @@ import (
 	"github.com/Conor-Moran/waffle/utils"
 )
 
-func ReadJson(filePath string) (jsonAsMap map[string]any) {
+func parseJson(filePath string) (jsonAsMap map[string]any) {
 	jsonAsMap = make(map[string]any)
 
 	data, err := os.ReadFile(filePath)
@@ -20,14 +20,14 @@ func ReadJson(filePath string) (jsonAsMap map[string]any) {
 	return
 }
 
-func ReadCutter(filePath string) map[string]string {
+func parseCutter(filePath string) map[string]string {
 	data, err := os.ReadFile(filePath)
 	utils.IfErrLogFatal(err)
 
 	return map[string]string{filePath: string(data)}
 }
 
-func Read[T any](dirPath string, parser func(string) T) (parsed []T) {
+func readFiles[T any](dirPath string, parse func(string) T) (parsed []T) {
 	parsed = make([]T, 0)
 
 	entries, err := os.ReadDir(dirPath)
@@ -35,25 +35,25 @@ func Read[T any](dirPath string, parser func(string) T) (parsed []T) {
 
 	for _, entry := range entries {
 		if !entry.IsDir() {
-			parsed = append(parsed, parser(utils.FilePath(dirPath, entry)))
+			parsed = append(parsed, parse(utils.FilePath(dirPath, entry)))
 		}
 	}
 
 	return
 }
 
-func ReadJsonFiles(dirPath string) []map[string]any {
-	return Read(dirPath, ReadJson)
+func readJsonFiles(dirPath string) []map[string]any {
+	return readFiles(dirPath, parseJson)
 }
 
-func ReadCutterFiles(dirPath string) []map[string]string {
-	return Read(dirPath, ReadCutter)
+func readCutterFiles(dirPath string) []map[string]string {
+	return readFiles(dirPath, parseCutter)
 }
 
 func Run() {
-	recipes := ReadJsonFiles("./ins/recipes")
-	ingredients := ReadJsonFiles("./ins/ingredients")
-	cutters := ReadCutterFiles("./ins/cutters")
+	recipes := readJsonFiles("./ins/recipes")
+	ingredients := readJsonFiles("./ins/ingredients")
+	cutters := readCutterFiles("./ins/cutters")
 
 	fmt.Println(recipes, ingredients, cutters)
 }
