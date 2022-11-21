@@ -1,4 +1,8 @@
 {
+    "str": "strVal",
+    "boo": true,
+    "num": 45,
+    "obj": {},
     "people": [{
         "firstName": "Jim",
         "lastName": "Gordon",

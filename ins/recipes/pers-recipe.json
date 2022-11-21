@@ -1,3 +1,4 @@
 {
+    "ingredients": "./ins/ingredients/pers-model.json",
     "people": "./ins/cutters/cutter.txt"
 }
