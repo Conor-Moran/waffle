@@ -16,7 +16,7 @@ type JsonAsMap map[string]any
 type Cutter string
 
 func parseJson(filePath string) (jsonAsMap JsonAsMap) {
-	jsonAsMap = linkedhashmap.new(type)
+	jsonAsMap = make(JsonAsMap)
 
 	parseJsonX(filePath, &jsonAsMap)
 	return
