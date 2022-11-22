@@ -82,9 +82,9 @@ func Run() {
 
 		for key, value := range context {
 			if obj, ok := value.([]interface{}); ok {
-				fmt.Printf("\nARRAY: %s -- %v", key, reflect.TypeOf(obj))
+				fmt.Printf("\nARRAY: %s -- %v", key, reflect.TypeOf(JsonObjList(obj)))
 			} else if obj, ok := value.(map[string]any); ok {
-				fmt.Printf("\nOBJECT: %s -- %v", key, reflect.TypeOf(obj))
+				fmt.Printf("\nOBJECT: %s -- %v", key, reflect.TypeOf(JsonObj(obj)))
 			} else {
 				fmt.Printf("\nPRIMITIVE: %s -- %v", key, reflect.TypeOf(value))
 			}
@@ -95,3 +95,6 @@ func Run() {
 
 	fmt.Println(cutters)
 }
+
+type JsonObj map[string]any
+type JsonObjList []interface{}
