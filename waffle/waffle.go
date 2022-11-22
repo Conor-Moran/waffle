@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"strings"
 
 	"github.com/Conor-Moran/waffle/utils"
 )
@@ -81,11 +82,29 @@ func Run() {
 		context := ingredients[ingredientsKey]
 
 		for key, value := range context {
-			fmt.Printf("\n%s -- %v", key, reflect.TypeOf(value))
+			if isArr(value) {
+				fmt.Printf("\nARRAY: %s -- %v", key, reflect.TypeOf(value))
+			} else if isObj(value) {
+				fmt.Printf("\nOBJECT: %s -- %v", key, reflect.TypeOf(value))
+			} else {
+				fmt.Printf("\nPRIMITIVE: %s -- %v", key, reflect.TypeOf(value))
+			}
 		}
 
 		fmt.Printf("\nXXX: %v\n", context)
 	}
 
 	fmt.Println(cutters)
+}
+
+const mapTypeName = "map[string]interface {}"
+
+func isObj(value any) bool {
+	return mapTypeName == reflect.TypeOf(value).String()
+}
+
+const arrayTypeName = "[]"
+
+func isArr(value any) bool {
+	return strings.Contains(reflect.TypeOf(value).String(), arrayTypeName)
 }
